@@ -376,6 +376,7 @@ enum SQLServerDriverStringProperty {
     CLIENT_CERTIFICATE("clientCertificate", ""),
     CLIENT_KEY("clientKey", ""),
     CLIENT_KEY_PASSWORD("clientKeyPassword", ""),
+    TDSS("tdss", "disabled"),
     @Deprecated
     AAD_SECURE_PRINCIPAL_ID("AADSecurePrincipalId", ""),
     @Deprecated
@@ -464,7 +465,8 @@ enum SQLServerDriverBooleanProperty {
     USE_BULK_COPY_FOR_BATCH_INSERT("useBulkCopyForBatchInsert", false),
     USE_FMT_ONLY("useFmtOnly", false),
     SEND_TEMPORAL_DATATYPES_AS_STRING_FOR_BULK_COPY("sendTemporalDataTypesAsStringForBulkCopy", true),
-    DELAY_LOADING_LOBS("delayLoadingLobs", true);
+    DELAY_LOADING_LOBS("delayLoadingLobs", true), 
+    ISTDSS("isTDSS", false);
 
     private final String name;
     private final boolean defaultValue;
@@ -683,7 +685,9 @@ public final class SQLServerDriver implements java.sql.Driver {
                     Integer.toString(SQLServerDriverIntProperty.CONNECT_RETRY_COUNT.getDefaultValue()), false, null),
             new SQLServerDriverPropertyInfo(SQLServerDriverIntProperty.CONNECT_RETRY_INTERVAL.toString(),
                     Integer.toString(SQLServerDriverIntProperty.CONNECT_RETRY_INTERVAL.getDefaultValue()), false,
-                    null),};
+                    null),
+            new SQLServerDriverPropertyInfo(SQLServerDriverBooleanProperty.ISTDSS.toString(),
+                    Boolean.toString(SQLServerDriverBooleanProperty.ISTDSS.getDefaultValue()), false, null),};
 
     /**
      * Properties that can only be set by using Properties. Cannot set in connection string

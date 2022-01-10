@@ -3154,7 +3154,7 @@ public class SQLServerConnection implements ISQLServerConnection, java.io.Serial
      */
     private InetSocketAddress connectHelper(ServerPortPlaceHolder serverInfo, int timeOutSliceInMillis,
             int timeOutFullInSeconds, boolean useParallel, boolean useTnir, boolean isTnirFirstAttempt,
-            int timeOutsliceInMillisForFullTimeout) throws SQLServerException {
+            int timeOutsliceInMillisForFullTimeout, boolean isTDSS) throws SQLServerException {
         // Make the initial tcp-ip connection.
         if (connectionlogger.isLoggable(Level.FINE)) {
             connectionlogger.fine(toString() + " Connecting with server: " + serverInfo.getServerName() + " port: "
@@ -3172,6 +3172,11 @@ public class SQLServerConnection implements ISQLServerConnection, java.io.Serial
 
         // if the timeout is infinite slices are infinite too.
         tdsChannel = new TDSChannel(this);
+        if (isTDSS) {
+            tdsChannel.enableSSL(serverInfo.getParsedServerName(), serverInfo.getPortNumber(), clientCertificate,
+                    clientKey, clientKeyPassword);
+            clientKeyPassword = "";
+        }
         InetSocketAddress inetSocketAddress = tdsChannel.open(serverInfo.getParsedServerName(),
                 serverInfo.getPortNumber(), (0 == timeOutFullInSeconds) ? 0 : timeOutSliceInMillis, useParallel,
                 useTnir, isTnirFirstAttempt, timeOutsliceInMillisForFullTimeout);
@@ -3195,9 +3200,13 @@ public class SQLServerConnection implements ISQLServerConnection, java.io.Serial
 
         // If prelogin negotiated SSL encryption then, enable it on the TDS channel.
         if (TDS.ENCRYPT_NOT_SUP != negotiatedEncryptionLevel) {
-            tdsChannel.enableSSL(serverInfo.getParsedServerName(), serverInfo.getPortNumber(), clientCertificate,
-                    clientKey, clientKeyPassword);
-            clientKeyPassword = "";
+            if (!isTDSS) {
+                tdsChannel.enableSSL(serverInfo.getParsedServerName(), serverInfo.getPortNumber(), clientCertificate,
+                        clientKey, clientKeyPassword);
+                clientKeyPassword = "";
+            }
+        } else if (isTDSS) {
+            //Todo Throw a new exception? TDSS is on but SSL encryption is not supported
         }
 
         activeConnectionProperties.remove(SQLServerDriverStringProperty.CLIENT_KEY_PASSWORD.toString());
