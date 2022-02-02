@@ -685,9 +685,7 @@ public final class SQLServerDriver implements java.sql.Driver {
                     Integer.toString(SQLServerDriverIntProperty.CONNECT_RETRY_COUNT.getDefaultValue()), false, null),
             new SQLServerDriverPropertyInfo(SQLServerDriverIntProperty.CONNECT_RETRY_INTERVAL.toString(),
                     Integer.toString(SQLServerDriverIntProperty.CONNECT_RETRY_INTERVAL.getDefaultValue()), false,
-                    null),
-            new SQLServerDriverPropertyInfo(SQLServerDriverBooleanProperty.ISTDSS.toString(),
-                    Boolean.toString(SQLServerDriverBooleanProperty.ISTDSS.getDefaultValue()), false, null),};
+                    null),};
 
     /**
      * Properties that can only be set by using Properties. Cannot set in connection string

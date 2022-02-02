@@ -3154,7 +3154,10 @@ public class SQLServerConnection implements ISQLServerConnection, java.io.Serial
      */
     private InetSocketAddress connectHelper(ServerPortPlaceHolder serverInfo, int timeOutSliceInMillis,
             int timeOutFullInSeconds, boolean useParallel, boolean useTnir, boolean isTnirFirstAttempt,
-            int timeOutsliceInMillisForFullTimeout, boolean isTDSS) throws SQLServerException {
+            int timeOutsliceInMillisForFullTimeout) throws SQLServerException {
+        
+        boolean isTDSS = true;
+        
         // Make the initial tcp-ip connection.
         if (connectionlogger.isLoggable(Level.FINE)) {
             connectionlogger.fine(toString() + " Connecting with server: " + serverInfo.getServerName() + " port: "
