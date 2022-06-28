@@ -538,7 +538,7 @@ final class Parameter {
                         if (providedDecimal.precision() >= scale) {
                             param.typeDefinition = "decimal(" + providedDecimal.precision() + "," + scale + ")";
                         } else {
-                            param.typeDefinition = "decimal(" + scale + "," + scale + ")";
+                            param.typeDefinition = "decimal(" + SQLServerConnection.maxDecimalPrecision + "," + scale + ")";
                         }
                     } else {
                         param.typeDefinition = "decimal(" + SQLServerConnection.maxDecimalPrecision + "," + scale + ")";
