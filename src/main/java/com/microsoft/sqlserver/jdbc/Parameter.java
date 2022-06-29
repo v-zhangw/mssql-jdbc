@@ -532,7 +532,7 @@ final class Parameter {
                         if (userProvidesPrecision) {
                             param.typeDefinition = "decimal(" + valueLength + "," + scale + ")";
                         }
-                    } else if (dtv.getJdbcType() == JDBCType.DECIMAL
+                    } else if (dtv.getJavaType() == JavaType.BIGDECIMAL
                             && (providedDecimal = (BigDecimal) dtv.getValue(dtv.getJdbcType(), scale, null, null,
                                     typeInfo, cryptoMeta, null, null)) != null) {
                         if (providedDecimal.precision() >= scale) {
